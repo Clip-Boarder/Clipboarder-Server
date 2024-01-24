@@ -18,26 +18,27 @@ public class TextService {
     private final JWTUtil jwtUtil;
 
     public void copy(String token, TextDTO textDTO){
-        String email = null;
-        try {
-            email = jwtUtil.validateAndExtract(token);
-        } catch (Exception e){
-            e.printStackTrace();
-        }
-
+        String email = jwtUtil.validateAndExtract(token);
         textDTO.setEmail(email);
         Text text = dtoToEntity(textDTO);
 
         textRepository.save(text);
     }
 
-    public List<TextDTO> getList(String token) throws Exception {
+    public List<TextDTO> getList(String token){
         String email = jwtUtil.validateAndExtract(token);
 
         List<Text> textList = textRepository.findAllByWriterEmail(email);
         List<TextDTO> textDTOList = textList.stream().map(this::entityToDTO).toList();
 
         return textDTOList;
+    }
+
+    public void delete(String token, TextDTO textDTO) {
+        String email = jwtUtil.validateAndExtract(token);
+
+        Long id = textDTO.getId();
+        textRepository.deleteById(id);
     }
 
     private TextDTO entityToDTO(Text text){
