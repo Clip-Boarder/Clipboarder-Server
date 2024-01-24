@@ -30,7 +30,7 @@ public class JWTUtil {
                 .compact();
     }
 
-    public String validateAndExtract(String tokenStr) throws Exception{
+    public String validateAndExtract(String tokenStr){
         String contentValue = null;
 
         try {
