@@ -24,8 +24,9 @@ public class TextController {
     private final TextService textService;
 
     @PostMapping
-    public void copy(@RequestBody TextDTO textDTO){
-        textService.copy(textDTO);
+    public void copy(HttpServletRequest request, @RequestBody TextDTO textDTO){
+        String token = request.getHeader("Authorization");
+        textService.copy(token, textDTO);
     }
 
     @GetMapping(produces = "application/json")

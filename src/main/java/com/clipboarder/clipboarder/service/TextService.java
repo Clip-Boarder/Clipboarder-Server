@@ -17,7 +17,15 @@ public class TextService {
     private final TextRepository textRepository;
     private final JWTUtil jwtUtil;
 
-    public void copy(TextDTO textDTO){
+    public void copy(String token, TextDTO textDTO){
+        String email = null;
+        try {
+            email = jwtUtil.validateAndExtract(token);
+        } catch (Exception e){
+            e.printStackTrace();
+        }
+
+        textDTO.setEmail(email);
         Text text = dtoToEntity(textDTO);
 
         textRepository.save(text);
