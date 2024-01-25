@@ -1,6 +1,7 @@
 package com.clipboarder.clipboarder.controller;
 
 import com.clipboarder.clipboarder.entity.Text;
+import com.clipboarder.clipboarder.entity.dto.ResponseDTO;
 import com.clipboarder.clipboarder.entity.dto.TextDTO;
 import com.clipboarder.clipboarder.security.util.JWTUtil;
 import com.clipboarder.clipboarder.service.TextService;
@@ -24,8 +25,9 @@ public class TextController {
     private final TextService textService;
 
     @PostMapping
-    public void copy(@RequestBody TextDTO textDTO){
-        textService.copy(textDTO);
+    public void copy(HttpServletRequest request, @RequestBody TextDTO textDTO){
+        String token = request.getHeader("Authorization");
+        textService.copy(token, textDTO);
     }
 
     @GetMapping(produces = "application/json")
@@ -34,5 +36,14 @@ public class TextController {
         List<TextDTO> textDTOList = textService.getList(token);
 
         return ResponseEntity.ok(textDTOList);
+    }
+
+    @DeleteMapping
+    public ResponseEntity<ResponseDTO> delete(HttpServletRequest request, @RequestBody TextDTO textDTO){
+        String token = request.getHeader("Authorization");
+
+        textService.delete(token, textDTO);
+
+        return ResponseEntity.ok(new ResponseDTO("200", "GOOD~"));
     }
 }
