@@ -3,6 +3,7 @@ package com.clipboarder.clipboarder.controller;
 import com.clipboarder.clipboarder.entity.dto.SignupResponse;
 import com.clipboarder.clipboarder.entity.dto.TextCopyResponse;
 import com.clipboarder.clipboarder.entity.dto.TextDTO;
+import com.clipboarder.clipboarder.entity.dto.TextGetResponse;
 import com.clipboarder.clipboarder.service.TextService;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
@@ -29,11 +30,11 @@ public class TextController {
     }
 
     @GetMapping(produces = "application/json")
-    public ResponseEntity<List<TextDTO>> getList(HttpServletRequest request) throws Exception{
+    public ResponseEntity<TextGetResponse> getList(HttpServletRequest request) throws Exception{
         String token = request.getHeader("Authorization");
         List<TextDTO> textDTOList = textService.getList(token);
 
-        return ResponseEntity.ok(textDTOList);
+        return ResponseEntity.ok(new TextGetResponse(true, textDTOList));
     }
 
     @DeleteMapping
