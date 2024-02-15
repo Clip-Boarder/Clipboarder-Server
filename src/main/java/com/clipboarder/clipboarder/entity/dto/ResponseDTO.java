@@ -7,9 +7,12 @@ import lombok.NoArgsConstructor;
 
 @Data
 @Builder
-@AllArgsConstructor
-@NoArgsConstructor
 public class ResponseDTO {
-    private String code;
-    private String message;
+    private boolean result;
+    private String data;
+
+    public ResponseDTO(boolean result, String data){
+        this.result = result;
+        this.data = data;
+    }
 }
