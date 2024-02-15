@@ -17,12 +17,14 @@ public class TextService {
     private final TextRepository textRepository;
     private final JWTUtil jwtUtil;
 
-    public void copy(String token, TextDTO textDTO){
+    public Long copy(String token, TextDTO textDTO){
         String email = jwtUtil.validateAndExtract(token);
         textDTO.setEmail(email);
         Text text = dtoToEntity(textDTO);
 
-        textRepository.save(text);
+        Text responseText = textRepository.save(text);
+        Long id = responseText.getId();
+        return id;
     }
 
     public List<TextDTO> getList(String token){
