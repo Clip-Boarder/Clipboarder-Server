@@ -44,6 +44,6 @@ public class TextController {
 
         textService.delete(token, textDTO);
 
-        return ResponseEntity.ok(new ResponseDTO("200", "GOOD~"));
+        return ResponseEntity.ok(new ResponseDTO(true, "GOOD~"));
     }
 }
