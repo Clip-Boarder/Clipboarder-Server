@@ -1,7 +1,7 @@
 package com.clipboarder.clipboarder.controller;
 
 import com.clipboarder.clipboarder.entity.dto.ClipboarderUserDTO;
-import com.clipboarder.clipboarder.entity.dto.ResponseDTO;
+import com.clipboarder.clipboarder.entity.dto.SignupResponse;
 import com.clipboarder.clipboarder.service.ClipboarderService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -17,10 +17,10 @@ public class ClipboarderUserController {
     private final ClipboarderService clipboarderService;
 
     @PostMapping
-    public ResponseEntity<ResponseDTO> signUp(@RequestBody ClipboarderUserDTO clipboarderUserDTO){
+    public ResponseEntity<SignupResponse> signUp(@RequestBody ClipboarderUserDTO clipboarderUserDTO){
         clipboarderService.register(clipboarderUserDTO);
 
-        return ResponseEntity.ok().body(new ResponseDTO(true, "GOOD~~"));
+        return ResponseEntity.ok().body(new SignupResponse(true, "GOOD~~"));
     }
 
 }
