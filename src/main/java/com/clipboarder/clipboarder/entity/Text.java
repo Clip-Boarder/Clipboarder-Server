@@ -18,5 +18,5 @@ public class Text extends BaseEntity{
     private String content;
 
     @ManyToOne
-    private ClipboarderUser writer;
+    private ClipboarderUser user;
 }

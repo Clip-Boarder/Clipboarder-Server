@@ -28,7 +28,7 @@ public class TextService {
     public List<TextDTO> getList(String token){
         String email = jwtUtil.validateAndExtract(token);
 
-        List<Text> textList = textRepository.findAllByWriterEmail(email);
+        List<Text> textList = textRepository.findAllByUserEmail(email);
         List<TextDTO> textDTOList = textList.stream().map(this::entityToDTO).toList();
 
         return textDTOList;
@@ -45,7 +45,7 @@ public class TextService {
         TextDTO textDTO = TextDTO.builder()
                 .id(text.getId())
                 .content(text.getContent())
-                .email(text.getWriter().getEmail())
+                .email(text.getUser().getEmail())
                 .build();
 
         return textDTO;
@@ -55,7 +55,7 @@ public class TextService {
         Text text = Text.builder()
                 .id(textDTO.getId())
                 .content(textDTO.getContent())
-                .writer(ClipboarderUser.builder().email(textDTO.getEmail()).build())
+                .user(ClipboarderUser.builder().email(textDTO.getEmail()).build())
                 .build();
 
         return text;
