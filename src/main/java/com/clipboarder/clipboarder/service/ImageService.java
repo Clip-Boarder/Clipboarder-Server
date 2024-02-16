@@ -16,6 +16,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -55,6 +56,12 @@ public class ImageService {
         }
 
         return returnImage.getId();
+    }
+
+    public List<Image> getImages(String email) {
+        List<Image> images = imageRepository.findAllByUser_Email(email);
+
+        return images;
     }
 
     private String makeFolder(){
