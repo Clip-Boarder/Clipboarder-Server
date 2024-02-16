@@ -1,8 +1,7 @@
 package com.clipboarder.clipboarder.security.service;
 
 import com.clipboarder.clipboarder.entity.ClipboarderUser;
-import com.clipboarder.clipboarder.entity.dto.ClipboarderUserDTO;
-import com.clipboarder.clipboarder.repository.ClipboarderRepository;
+import com.clipboarder.clipboarder.repository.ClipboarderUserRepository;
 import com.clipboarder.clipboarder.security.dto.ClipboarderAuthUserDTO;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
@@ -19,13 +18,13 @@ import java.util.stream.Collectors;
 @Log4j2
 @RequiredArgsConstructor
 public class UserDetailsServiceImpl implements UserDetailsService {
-    private final ClipboarderRepository clipboarderRepository;
+    private final ClipboarderUserRepository clipboarderUserRepository;
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         log.info("UserDetailsServiceImpl loadbyusername : " + username);
 
-        Optional<ClipboarderUser> result = clipboarderRepository.findByEmail(username);
+        Optional<ClipboarderUser> result = clipboarderUserRepository.findByEmail(username);
         if(result.isEmpty())
             throw new UsernameNotFoundException("정보가 없습니다.");
 
