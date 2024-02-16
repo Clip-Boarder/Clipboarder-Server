@@ -1,6 +1,7 @@
 package com.clipboarder.clipboarder.service;
 
 import com.clipboarder.clipboarder.entity.ClipboarderUser;
+import com.clipboarder.clipboarder.entity.ClipboarderUserRole;
 import com.clipboarder.clipboarder.entity.dto.ClipboarderUserDTO;
 import com.clipboarder.clipboarder.repository.ClipboarderRepository;
 import lombok.RequiredArgsConstructor;
@@ -18,6 +19,7 @@ public class ClipboarderService {
 
     public void register(ClipboarderUserDTO clipboarderUserDTO){
         ClipboarderUser clipboarderUser = dtoToEntity(clipboarderUserDTO);
+        clipboarderUser.addRole(ClipboarderUserRole.USER);
 
         clipboarderRepository.save(clipboarderUser);
     }
