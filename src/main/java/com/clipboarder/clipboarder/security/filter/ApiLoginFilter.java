@@ -9,12 +9,14 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.extern.log4j.Log4j2;
+import net.minidev.json.JSONObject;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.authentication.AbstractAuthenticationProcessingFilter;
 
 import java.io.IOException;
+import java.io.PrintWriter;
 
 @Log4j2
 public class ApiLoginFilter extends AbstractAuthenticationProcessingFilter {
@@ -55,11 +57,18 @@ public class ApiLoginFilter extends AbstractAuthenticationProcessingFilter {
         String token = null;
         try {
             token = jwtUtil.generateToken(email);
+            JSONObject data = new JSONObject();
+            data.put("access_token", token);
 
-            response.setContentType("text/plain");
-            response.getOutputStream().write(token.getBytes());
+            JSONObject json = new JSONObject();
+            json.put("result", true);
+            json.put("data", data);
 
-            log.info(token);
+            response.setContentType("application/json;charset=utf-8");
+
+            PrintWriter out = response.getWriter();
+            out.print(json);
+            return;
         } catch (Exception e){
             e.printStackTrace();
         }

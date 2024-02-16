@@ -1,8 +1,10 @@
 package com.clipboarder.clipboarder.controller;
 
 import com.clipboarder.clipboarder.entity.dto.ClipboarderUserDTO;
+import com.clipboarder.clipboarder.entity.dto.SignupResponse;
 import com.clipboarder.clipboarder.service.ClipboarderService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -15,8 +17,10 @@ public class ClipboarderUserController {
     private final ClipboarderService clipboarderService;
 
     @PostMapping
-    public void signUp(@RequestBody ClipboarderUserDTO clipboarderUserDTO){
+    public ResponseEntity<SignupResponse> signUp(@RequestBody ClipboarderUserDTO clipboarderUserDTO){
         clipboarderService.register(clipboarderUserDTO);
+
+        return ResponseEntity.ok().body(new SignupResponse(true, "GOOD~~"));
     }
 
 }
