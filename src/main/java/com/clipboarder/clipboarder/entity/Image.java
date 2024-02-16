@@ -15,7 +15,7 @@ public class Image extends BaseEntity{
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
-    private String URL;
+    private String path;
 
     @ManyToOne
     private ClipboarderUser user;
