@@ -1,8 +1,9 @@
 package com.clipboarder.clipboarder.service;
 
 import com.clipboarder.clipboarder.entity.ClipboarderUser;
+import com.clipboarder.clipboarder.entity.ClipboarderUserRole;
 import com.clipboarder.clipboarder.entity.dto.ClipboarderUserDTO;
-import com.clipboarder.clipboarder.repository.ClipboarderRepository;
+import com.clipboarder.clipboarder.repository.ClipboarderUserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -12,17 +13,18 @@ import java.util.Optional;
 @Service
 @RequiredArgsConstructor
 public class ClipboarderService {
-    private final ClipboarderRepository clipboarderRepository;
+    private final ClipboarderUserRepository clipboarderUserRepository;
     private final PasswordEncoder passwordEncoder;
 
     public void register(ClipboarderUserDTO clipboarderUserDTO){
         ClipboarderUser clipboarderUser = dtoToEntity(clipboarderUserDTO);
+        clipboarderUser.addRole(ClipboarderUserRole.USER);
 
-        clipboarderRepository.save(clipboarderUser);
+        clipboarderUserRepository.save(clipboarderUser);
     }
 
     public ClipboarderUserDTO getUserByEmail(String email){
-        Optional<ClipboarderUser> result = clipboarderRepository.findByEmail(email);
+        Optional<ClipboarderUser> result = clipboarderUserRepository.findByEmail(email);
         ClipboarderUser clipboarderUser = result.get();
 
         ClipboarderUserDTO clipboarderUserDTO = entityToDTO(clipboarderUser);

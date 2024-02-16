@@ -8,5 +8,5 @@ import java.util.List;
 import java.util.Optional;
 
 public interface TextRepository extends JpaRepository<Text, Long> {
-    List<Text> findAllByWriterEmail(String email);
+    List<Text> findAllByUserEmail(String email);
 }
