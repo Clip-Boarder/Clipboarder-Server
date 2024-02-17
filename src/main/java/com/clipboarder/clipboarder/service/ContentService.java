@@ -7,13 +7,16 @@ import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 @RequiredArgsConstructor
 public class ContentService {
     private final ContentRepository contentRepository;
     private final ModelMapper modelMapper;
 
-    public Long saveContent(ContentDTO contentDTO){
+    public Long saveContent(String email, ContentDTO contentDTO){
+        contentDTO.setEmail(email);
         Content content = modelMapper.map(contentDTO, Content.class);
         Content resultContent = contentRepository.save(content);
 

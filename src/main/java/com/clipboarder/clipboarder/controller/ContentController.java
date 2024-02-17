@@ -1,13 +1,14 @@
 package com.clipboarder.clipboarder.controller;
 
 import com.clipboarder.clipboarder.entity.dto.ContentDTO;
+import com.clipboarder.clipboarder.security.util.JWTUtil;
 import com.clipboarder.clipboarder.service.ContentService;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/content")
@@ -17,8 +18,9 @@ public class ContentController {
     private final JWTUtil jwtUtil;
 
     @PostMapping
-    public ResponseEntity<Long> saveContent(@RequestBody ContentDTO contentDTO){
-        Long id = contentService.saveContent(contentDTO);
+    public ResponseEntity<Long> saveContent(HttpServletRequest request, @RequestBody ContentDTO contentDTO){
+        String email = jwtUtil.validateAndExtract(request.getHeader("Authorization"));
+        Long id = contentService.saveContent(email, contentDTO);
 
         return ResponseEntity.ok().body(id);
     }
