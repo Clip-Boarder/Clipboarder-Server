@@ -5,7 +5,6 @@ import lombok.Data;
 import net.minidev.json.JSONObject;
 
 @Data
-@Builder
 public class SignupResponse {
     private boolean result;
     private JSONObject data;
