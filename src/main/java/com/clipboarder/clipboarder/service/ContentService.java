@@ -19,4 +19,11 @@ public class ContentService {
 
         return resultContent.getId();
     }
+
+    public List<ContentDTO> getContent(String email) {
+        List<Content> contents = contentRepository.findAllByUser_Email(email);
+        List<ContentDTO> contentDTOs = contents.stream().map(content -> modelMapper.map(content, ContentDTO.class)).toList();
+
+        return contentDTOs;
+    }
 }
