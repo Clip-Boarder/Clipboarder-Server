@@ -28,8 +28,7 @@ public class ImageService {
     private final ClipboarderUserRepository clipboarderUserRepository;
     private final JWTUtil jwtUtil;
 
-    public Long save(String token, MultipartFile uploadImage) throws NotFoundClipboarderUserException {
-        String email = jwtUtil.validateAndExtract(token);
+    public Long save(String email, MultipartFile uploadImage) throws NotFoundClipboarderUserException {
         String fileName = uploadImage.getOriginalFilename();
 
         // 날짜 폴더 생성
