@@ -41,12 +41,16 @@ public class ImageController {
     }
 
     @GetMapping
-    public ResponseEntity<List<Image>> getImages(HttpServletRequest request){
-        String token = request.getHeader("Authorization");
-        String email = jwtUtil.validateAndExtract(token);
+    public ResponseEntity<Resource> getImage(HttpServletRequest request, @RequestBody ImageRequestDTO imageRequestDTO) throws MalformedURLException {
+        jwtUtil.validateAndExtract(request.getHeader("Authorization"));
 
-        List<Image> images = imageService.getImages(email);
-        return ResponseEntity.ok().body(images);
+        String path = imageRequestDTO.getPath();
+        String filename = path.split("_")[1].split("\\.")[0];
+        Resource resource = new UrlResource("file:" + path);
+        HttpHeaders headers = new HttpHeaders();
+        headers.add(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + filename + "\"");
+
+        return new ResponseEntity<>(resource, headers, HttpStatus.OK);
     }
 
 }
