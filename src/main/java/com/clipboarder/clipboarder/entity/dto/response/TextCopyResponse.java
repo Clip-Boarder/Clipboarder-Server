@@ -1,4 +1,4 @@
-package com.clipboarder.clipboarder.entity.dto;
+package com.clipboarder.clipboarder.entity.dto.response;
 
 import lombok.Builder;
 import lombok.Data;
