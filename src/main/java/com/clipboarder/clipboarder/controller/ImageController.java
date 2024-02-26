@@ -1,7 +1,7 @@
 package com.clipboarder.clipboarder.controller;
 
 import com.clipboarder.clipboarder.entity.Image;
-import com.clipboarder.clipboarder.entity.dto.ImageUploadResponseDTO;
+import com.clipboarder.clipboarder.entity.dto.response.ImageUploadResponseDTO;
 import com.clipboarder.clipboarder.exception.NotFoundClipboarderUserException;
 import com.clipboarder.clipboarder.exception.NotImageException;
 import com.clipboarder.clipboarder.security.util.JwtUtil;

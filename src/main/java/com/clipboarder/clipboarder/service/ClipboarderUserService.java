@@ -2,8 +2,12 @@ package com.clipboarder.clipboarder.service;
 
 import com.clipboarder.clipboarder.entity.ClipboarderUser;
 import com.clipboarder.clipboarder.entity.dto.ClipboarderUserDTO;
+import com.clipboarder.clipboarder.entity.dto.request.SignInRequestDTO;
+import com.clipboarder.clipboarder.entity.dto.response.SignInResponseDTO;
 import com.clipboarder.clipboarder.repository.ClipboarderUserRepository;
+import com.clipboarder.clipboarder.security.util.JwtUtil;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -14,23 +18,7 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class ClipboarderUserService {
     private final ClipboarderUserRepository clipboarderUserRepository;
-    private final PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
-    public boolean signUp(ClipboarderUserDTO clipboarderUserDTO){
-        String email = clipboarderUserDTO.getEmail();
-
-        // 중복 확인
-        boolean isExist = clipboarderUserRepository.existsByEmail(email);
-        if(isExist)
-            return false;
-
-        // DB에 저장
-        ClipboarderUser clipboarderUser = dtoToEntity(clipboarderUserDTO);
-        clipboarderUserRepository.save(clipboarderUser);
-
-        return true;
-
-    }
 
     public ClipboarderUserDTO getUserByEmail(String email){
         Optional<ClipboarderUser> result = clipboarderUserRepository.findByEmail(email);
