@@ -46,6 +46,7 @@ public class ClipboarderUserService {
                 .name(clipboarderUserDTO.getName())
                 .picture(clipboarderUserDTO.getPicture())
                 .provider(clipboarderUserDTO.getProvider())
+                .role("USER_USER")
                 .build();
 
         return clipboarderUser;
