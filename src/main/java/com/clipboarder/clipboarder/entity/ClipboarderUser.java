@@ -20,12 +20,5 @@ public class ClipboarderUser extends BaseEntity{
     private String name;
     private String picture;
     private String provider;
-
-    @ElementCollection(fetch = FetchType.LAZY)
-    @Builder.Default
-    private Set<ClipboarderUserRole> roleSet = new HashSet<>();
-
-    public void addRole(ClipboarderUserRole clipboarderUserRole){
-        roleSet.add(clipboarderUserRole);
-    }
+    private String role;
 }
