@@ -4,7 +4,7 @@ import com.clipboarder.clipboarder.entity.ClipboarderUser;
 import com.clipboarder.clipboarder.entity.Text;
 import com.clipboarder.clipboarder.entity.dto.TextDTO;
 import com.clipboarder.clipboarder.repository.TextRepository;
-import com.clipboarder.clipboarder.security.util.JWTUtil;
+import com.clipboarder.clipboarder.security.util.JwtUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -15,7 +15,7 @@ import java.util.List;
 public class TextService {
 
     private final TextRepository textRepository;
-    private final JWTUtil jwtUtil;
+    private final JwtUtil jwtUtil;
 
     public Long copy(String token, TextDTO textDTO){
         String email = jwtUtil.validateAndExtract(token);
