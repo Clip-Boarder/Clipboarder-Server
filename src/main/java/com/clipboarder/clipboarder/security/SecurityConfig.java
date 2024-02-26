@@ -1,84 +1,96 @@
 package com.clipboarder.clipboarder.security;
 
-import com.clipboarder.clipboarder.security.filter.ApiCheckFilter;
-import com.clipboarder.clipboarder.security.filter.ApiLoginFilter;
-import com.clipboarder.clipboarder.security.service.UserDetailsServiceImpl;
-import com.clipboarder.clipboarder.security.util.JWTUtil;
-import com.clipboarder.clipboarder.service.ClipboarderService;
+import com.clipboarder.clipboarder.security.filter.JwtAuthenticationFilter;
+import com.clipboarder.clipboarder.security.service.OAuthUserDetailsServiceImpl;
+import com.clipboarder.clipboarder.security.util.JwtUtil;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.Customizer;
-import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
+import org.springframework.security.config.annotation.web.configurers.CsrfConfigurer;
+import org.springframework.security.config.annotation.web.configurers.HttpBasicConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+
+import java.io.IOException;
 
 @Configuration
 @EnableWebSecurity
 @Log4j2
+@RequiredArgsConstructor
 public class SecurityConfig {
-
-    @Autowired
-    private UserDetailsServiceImpl userDetailsService;
+    private final JwtAuthenticationFilter jwtAuthenticationFilter;
+    private final OAuthUserDetailsServiceImpl oAuthUserDetailsService;
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-        // AuthenticationManager 설정
-        AuthenticationManagerBuilder authenticationManagerBuilder = http.getSharedObject(AuthenticationManagerBuilder.class);
-        authenticationManagerBuilder.userDetailsService(userDetailsService).passwordEncoder(passwordEncoder());
-
-        // Get AuthenticationManger
-        AuthenticationManager authenticationManager = authenticationManagerBuilder.build();
-
-        // 반드시 필요
-        http.authenticationManager(authenticationManager);
-
-        http.sessionManagement((session) -> session
-                .sessionCreationPolicy(SessionCreationPolicy.STATELESS));
-        http.httpBasic(AbstractHttpConfigurer::disable);
-        http.csrf(AbstractHttpConfigurer::disable);
-        http.formLogin(Customizer.withDefaults()); // 인증/인가 절차에서 문제 발생 시, 로그인 페이지 이동
-        http.logout(Customizer.withDefaults()); // 로그아웃 기능 제공
         http
-                .authorizeHttpRequests(request->
-                        request
-                                .requestMatchers("/api/login").permitAll()
-                                .anyRequest().authenticated()
-                );
-
-        http.addFilterBefore(apiLoginFilter(authenticationManager), UsernamePasswordAuthenticationFilter.class);
-        http.addFilterBefore(apiCheckFilter(), UsernamePasswordAuthenticationFilter.class);
+//                .oauth2Login(Customizer.withDefaults()) // Activate OAuth
+                .cors(cors -> cors
+                        .configurationSource(corsConfigurationSource())
+                )
+                .csrf(CsrfConfigurer::disable)
+                .httpBasic(HttpBasicConfigurer::disable)
+                .sessionManagement(sessionManagement -> sessionManagement
+                    .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+                )
+                .authorizeHttpRequests(request -> request
+                        .requestMatchers("/", "/api/auth/**", "/oauth2/**").permitAll()
+                        .anyRequest().authenticated()
+                )
+//                .oauth2Login(oauth2 -> oauth2
+//                        .redirectionEndpoint(endpoint -> endpoint.baseUri("/oauth2/callback/*"))
+//                )
+                .exceptionHandling(exceptionHandling -> exceptionHandling
+                        .authenticationEntryPoint(new FailedAuthenticationEntryPoint())
+                )
+                .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
 
         return http.build();
+    }
+
+    @Bean
+    protected CorsConfigurationSource corsConfigurationSource(){
+        CorsConfiguration corsConfiguration = new CorsConfiguration();
+        corsConfiguration.addAllowedOrigin("*");
+        corsConfiguration.addAllowedMethod("*");
+        corsConfiguration.addAllowedHeader("*");
+
+        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+        source.registerCorsConfiguration("/api/**", corsConfiguration);
+
+        return source;
     }
 
     @Bean
     public PasswordEncoder passwordEncoder(){
         return new BCryptPasswordEncoder();
     }
+}
 
-    @Bean
-    public ApiCheckFilter apiCheckFilter(){
-        return new ApiCheckFilter(jwtUtil());
-    }
+class FailedAuthenticationEntryPoint implements AuthenticationEntryPoint{
 
-    public ApiLoginFilter apiLoginFilter(AuthenticationManager authenticationManager){
-        ApiLoginFilter apiLoginFilter = new ApiLoginFilter("/api/login", jwtUtil());
-        apiLoginFilter.setAuthenticationManager(authenticationManager);
-
-        return apiLoginFilter;
-    }
-
-    @Bean
-    public JWTUtil jwtUtil(){
-        return new JWTUtil();
+    @Override
+    public void commence(HttpServletRequest request,
+                         HttpServletResponse response,
+                         AuthenticationException authException) throws IOException, ServletException {
+        response.setContentType("application/json");
+        response.setStatus(HttpServletResponse.SC_FORBIDDEN);
+        response.getWriter().write("{\"result\": \"false\", \"message\": \"No Permission\"}");
     }
 }
