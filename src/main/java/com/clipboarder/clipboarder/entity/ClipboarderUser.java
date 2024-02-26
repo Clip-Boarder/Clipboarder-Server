@@ -15,8 +15,6 @@ import java.util.Set;
 public class ClipboarderUser extends BaseEntity{
     @Id
     private String email;
-
-    private String password;
     private String name;
     private String picture;
     private String provider;
