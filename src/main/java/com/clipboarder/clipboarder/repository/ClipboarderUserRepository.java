@@ -11,4 +11,6 @@ public interface ClipboarderUserRepository extends JpaRepository<ClipboarderUser
     @EntityGraph(attributePaths = {"roleSet"}, type = EntityGraph.EntityGraphType.LOAD)
     @Query(value = "select u from ClipboarderUser u where u.email = :email")
     Optional<ClipboarderUser> findByEmail(String email);
+
+    boolean existsByEmail(String email);
 }
