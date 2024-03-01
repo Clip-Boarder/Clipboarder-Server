@@ -1,8 +1,8 @@
 package com.clipboarder.clipboarder.controller;
 
 import com.clipboarder.clipboarder.entity.dto.response.SignUpResponseDTO;
-import com.clipboarder.clipboarder.entity.dto.response.TextCopyResponse;
 import com.clipboarder.clipboarder.entity.dto.TextDTO;
+import com.clipboarder.clipboarder.entity.dto.response.TextCopyResponseDTO;
 import com.clipboarder.clipboarder.entity.dto.response.TextGetResponse;
 import com.clipboarder.clipboarder.service.TextService;
 import jakarta.servlet.http.HttpServletRequest;
@@ -24,11 +24,11 @@ public class TextController {
     private final TextService textService;
 
     @PostMapping
-    public ResponseEntity<TextCopyResponse> copy(HttpServletRequest request, @RequestBody TextDTO textDTO){
+    public ResponseEntity<TextCopyResponseDTO> copy(HttpServletRequest request, @RequestBody TextDTO textDTO){
         String token = request.getHeader("Authorization");
         Long id = textService.copy(token, textDTO);
 
-        return ResponseEntity.ok().body(new TextCopyResponse(true, id));
+        return ResponseEntity.ok().body(new TextCopyResponseDTO(true, id.toString()));
     }
 
     @GetMapping(produces = "application/json")
