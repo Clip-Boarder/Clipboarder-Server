@@ -20,12 +20,11 @@ public class ClipboarderUserService {
     private final ClipboarderUserRepository clipboarderUserRepository;
 
 
-    public ClipboarderUserDTO getUserByEmail(String email){
+    public ClipboarderUser findByEmail(String email){
         Optional<ClipboarderUser> result = clipboarderUserRepository.findByEmail(email);
         ClipboarderUser clipboarderUser = result.get();
 
-        ClipboarderUserDTO clipboarderUserDTO = entityToDTO(clipboarderUser);
-        return clipboarderUserDTO;
+        return clipboarderUser;
     }
 
     private ClipboarderUser dtoToEntity(ClipboarderUserDTO clipboarderUserDTO){
