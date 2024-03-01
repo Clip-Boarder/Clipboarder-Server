@@ -52,6 +52,8 @@ dependencies {
 	// model mapper (for entity and DTO mapping)
 	implementation group: 'org.modelmapper', name: 'modelmapper', version: '3.2.0'
 
+	// validation
+	implementation 'org.springframework.boot:spring-boot-starter-validation'
 }
 
 tasks.named('test') {

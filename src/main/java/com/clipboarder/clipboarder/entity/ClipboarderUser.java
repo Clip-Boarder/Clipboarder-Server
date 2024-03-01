@@ -15,17 +15,8 @@ import java.util.Set;
 public class ClipboarderUser extends BaseEntity{
     @Id
     private String email;
-
-    private String password;
     private String name;
     private String picture;
     private String provider;
-
-    @ElementCollection(fetch = FetchType.LAZY)
-    @Builder.Default
-    private Set<ClipboarderUserRole> roleSet = new HashSet<>();
-
-    public void addRole(ClipboarderUserRole clipboarderUserRole){
-        roleSet.add(clipboarderUserRole);
-    }
+    private String role;
 }

@@ -8,7 +8,7 @@ import org.springframework.data.jpa.repository.Query;
 import java.util.Optional;
 
 public interface ClipboarderUserRepository extends JpaRepository<ClipboarderUser, String> {
-    @EntityGraph(attributePaths = {"roleSet"}, type = EntityGraph.EntityGraphType.LOAD)
-    @Query(value = "select u from ClipboarderUser u where u.email = :email")
     Optional<ClipboarderUser> findByEmail(String email);
+
+    boolean existsByEmail(String email);
 }

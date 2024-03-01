@@ -5,7 +5,7 @@ import com.clipboarder.clipboarder.entity.Image;
 import com.clipboarder.clipboarder.exception.NotFoundClipboarderUserException;
 import com.clipboarder.clipboarder.repository.ClipboarderUserRepository;
 import com.clipboarder.clipboarder.repository.ImageRepository;
-import com.clipboarder.clipboarder.security.util.JWTUtil;
+import com.clipboarder.clipboarder.security.util.JwtUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -17,7 +17,6 @@ import java.nio.file.Paths;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
-import java.util.Optional;
 import java.util.UUID;
 
 @Service
@@ -26,7 +25,7 @@ public class ImageService {
     private final String uploadPath = "/Users/hyun/Desktop/Clipboarder/Images";
     private final ImageRepository imageRepository;
     private final ClipboarderUserRepository clipboarderUserRepository;
-    private final JWTUtil jwtUtil;
+    private final JwtUtil jwtUtil;
 
     public Long save(String email, MultipartFile uploadImage) throws NotFoundClipboarderUserException {
         String fileName = uploadImage.getOriginalFilename();

@@ -1,7 +1,7 @@
 package com.clipboarder.clipboarder.controller;
 
 import com.clipboarder.clipboarder.entity.dto.ContentDTO;
-import com.clipboarder.clipboarder.security.util.JWTUtil;
+import com.clipboarder.clipboarder.security.util.JwtUtil;
 import com.clipboarder.clipboarder.service.ContentService;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
@@ -15,7 +15,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class ContentController {
     private final ContentService contentService;
-    private final JWTUtil jwtUtil;
+    private final JwtUtil jwtUtil;
 
     @PostMapping
     public ResponseEntity<Long> saveContent(HttpServletRequest request, @RequestBody ContentDTO contentDTO){

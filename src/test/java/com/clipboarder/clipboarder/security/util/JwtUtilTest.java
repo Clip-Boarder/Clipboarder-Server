@@ -1,12 +1,9 @@
 package com.clipboarder.clipboarder.security.util;
 
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
 
-import static org.junit.jupiter.api.Assertions.*;
-
-class JWTUtilTest {
-    public JWTUtil jwtUtil = new JWTUtil();
+class JwtUtilTest {
+    public JwtUtil jwtUtil = new JwtUtil();
 
     @Test
     public void justTest() throws Exception {
