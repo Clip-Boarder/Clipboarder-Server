@@ -1,4 +1,4 @@
-package com.clipboarder.clipboarder.entity.dto;
+package com.clipboarder.clipboarder.entity.dto.response;
 
 import lombok.Data;
 import net.minidev.json.JSONObject;

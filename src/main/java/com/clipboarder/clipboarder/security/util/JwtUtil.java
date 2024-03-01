@@ -4,18 +4,15 @@ import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.impl.DefaultClaims;
 import io.jsonwebtoken.impl.DefaultJws;
-import io.jsonwebtoken.impl.DefaultJwt;
 import lombok.extern.log4j.Log4j2;
-import org.springframework.http.HttpHeaders;
+import org.springframework.stereotype.Component;
 
 import java.time.ZonedDateTime;
 import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Objects;
 
 @Log4j2
-public class JWTUtil {
+@Component
+public class JwtUtil {
     private String secretKey = "heheh3122123dkfrwpTjddsadasadsadsadsadsadsehe";
 
     // 1month

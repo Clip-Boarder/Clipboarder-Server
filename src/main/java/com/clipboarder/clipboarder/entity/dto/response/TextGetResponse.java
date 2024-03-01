@@ -1,5 +1,6 @@
-package com.clipboarder.clipboarder.entity.dto;
+package com.clipboarder.clipboarder.entity.dto.response;
 
+import com.clipboarder.clipboarder.entity.dto.TextDTO;
 import lombok.Data;
 import net.minidev.json.JSONArray;
 import net.minidev.json.JSONObject;

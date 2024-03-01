@@ -4,6 +4,8 @@ import com.clipboarder.clipboarder.entity.BaseEntity;
 import com.clipboarder.clipboarder.entity.ClipboarderUserRole;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -17,12 +19,14 @@ import java.util.Set;
 @AllArgsConstructor
 @NoArgsConstructor
 public class ClipboarderUserDTO {
+    @NotBlank
+    @Email
     private String email;
-    private String password;
+    @NotBlank
     private String name;
     private String picture;
     private String provider;
-    private Set<ClipboarderUserRole> roleSet;
+    private String role;
 
     private LocalDateTime regDate;
     private LocalDateTime modDate;
