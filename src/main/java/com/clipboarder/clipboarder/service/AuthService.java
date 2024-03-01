@@ -46,7 +46,7 @@ public class AuthService {
 
         String token = null;
         try {
-            token = jwtUtil.generateToken(email);
+            token = jwtUtil.generateAccessToken(email);
         } catch (Exception e){
             e.printStackTrace();
         }
