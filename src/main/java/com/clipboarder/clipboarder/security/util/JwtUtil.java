@@ -18,11 +18,20 @@ public class JwtUtil {
     // 1month
     private long expire = 60 * 24 * 30;
 
-    public String generateToken(String content) throws Exception{
+    public String generateAccessToken(String email) throws Exception{
         return Jwts.builder()
                 .setIssuedAt(new Date())
                 .setExpiration(Date.from(ZonedDateTime.now().plusMinutes(expire).toInstant()))
-                .claim("sub", content)
+                .claim("sub", email)
+                .signWith(SignatureAlgorithm.HS256, secretKey.getBytes("UTF-8"))
+                .compact();
+    }
+
+    public String generateRefreshToken(String email) throws Exception{
+        return Jwts.builder()
+                .setIssuedAt(new Date())
+                .setExpiration(Date.from(ZonedDateTime.now().plusMinutes(expire).toInstant()))
+                .claim("sub", email)
                 .signWith(SignatureAlgorithm.HS256, secretKey.getBytes("UTF-8"))
                 .compact();
     }
