@@ -1,9 +1,12 @@
 package com.clipboarder.clipboarder.service;
 
 import com.clipboarder.clipboarder.entity.ClipboarderUser;
+import com.clipboarder.clipboarder.entity.Content;
 import com.clipboarder.clipboarder.entity.Image;
+import com.clipboarder.clipboarder.entity.dto.ContentType;
 import com.clipboarder.clipboarder.exception.NotFoundClipboarderUserException;
 import com.clipboarder.clipboarder.repository.ClipboarderUserRepository;
+import com.clipboarder.clipboarder.repository.ContentRepository;
 import com.clipboarder.clipboarder.repository.ImageRepository;
 import com.clipboarder.clipboarder.security.util.JwtUtil;
 import lombok.RequiredArgsConstructor;
@@ -24,6 +27,7 @@ import java.util.UUID;
 public class ImageService {
     private final String uploadPath = "/Users/hyun/Desktop/Clipboarder/Images";
     private final ImageRepository imageRepository;
+    private final ContentRepository contentRepository;
     private final ClipboarderUserRepository clipboarderUserRepository;
     private final JwtUtil jwtUtil;
 
@@ -42,10 +46,13 @@ public class ImageService {
 
         // DB에 저장
         ClipboarderUser clipboarderUser = clipboarderUserRepository.findByEmail(email).orElseThrow(() -> new NotFoundClipboarderUserException());
-        Image image = Image.builder()
-                .path(saveName)
-                .user(clipboarderUser).build();
-        Image returnImage = imageRepository.save(image);
+        Content content = Content.builder()
+                .content(saveName)
+                .type(ContentType.IMAGE)
+                .user(clipboarderUser)
+                .build();
+
+        Content returnImage = contentRepository.save(content);
 
         try { // 폴더에 저장
             uploadImage.transferTo(savePath);
@@ -53,7 +60,7 @@ public class ImageService {
             e.printStackTrace();
         }
 
-        return returnImage.getId();
+        return content.getId();
     }
 
     public List<Image> getImages(String email) {

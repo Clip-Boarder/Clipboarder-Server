@@ -34,16 +34,15 @@ public class ImageController {
 
     @PostMapping
     public ResponseEntity<ImageUploadResponseDTO> uploadImage(HttpServletRequest request, @RequestPart MultipartFile uploadImage) throws NotImageException, NotFoundClipboarderUserException {
-        String token = request.getHeader("Authorization");
-        Long id = imageService.save(token, uploadImage);
+        String email = jwtUtil.validateAndExtract(request.getHeader("Authorization"));
+        Long id = imageService.save(email, uploadImage);
 
         return ResponseEntity.ok(new ImageUploadResponseDTO(true, id));
     }
 
     @GetMapping
     public ResponseEntity<List<Image>> getImages(HttpServletRequest request){
-        String token = request.getHeader("Authorization");
-        String email = jwtUtil.validateAndExtract(token);
+        String email = jwtUtil.validateAndExtract(request.getHeader("Authorization"));
 
         List<Image> images = imageService.getImages(email);
         return ResponseEntity.ok().body(images);
